@@ -1,4 +1,13 @@
+import { useState, useEffect } from 'react'
+
 const Country = ({country}) => {
+    // const [weather, setWeather] = useState(null)
+    // useEffect(() => {
+    //   console.log("fethcing weater")
+    //   axios
+    //     .get()
+    //     .then(response => {setWeather(response.data)})
+    // }, [country])
     const langs = Object.values(country.languages)
     const imgStyle = {
         width: '200px',
@@ -20,11 +29,16 @@ const Country = ({country}) => {
                 style={imgStyle}
             />
         </div>
-
     )
 }
 
 const Countries = ({filteredCountries}) => {
+  const [selectedCountry, setSelectedCountry] = useState(null)
+
+  useEffect(() => {
+    setSelectedCountry(null)
+  }, [filteredCountries])
+
   if(!filteredCountries){
     return null
   }
@@ -42,10 +56,20 @@ const Countries = ({filteredCountries}) => {
       </div>
     )
   }
+  if(selectedCountry) {
+    return (
+      <div>
+        <Country country={selectedCountry} />
+      </div>
+    )
+  }
   return (
     <div>
         {filteredCountries.map(country => 
-            <div>{country.name.common}</div>)}
+            <div>
+              {country.name.common}
+              <button onClick={() => setSelectedCountry(country)}>show</button>
+            </div>)}
     </div>
   )
 }
